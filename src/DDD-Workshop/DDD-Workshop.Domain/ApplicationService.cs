@@ -111,6 +111,16 @@ namespace DDD_Workshop.Domain
 
             return this;
         }
+
+        public ApplicationStatus ManualEvaluation()
+        {
+            if (Status.Equals("Accepted"))
+            {
+                Status = "Manual Evaluation";
+            }
+
+            return this;
+        }
     }
 
     public class ApplicationAggregate : IAggregate
@@ -139,7 +149,7 @@ namespace DDD_Workshop.Domain
         {
             if (ApplicantHasOtherApplications(allApplications))
             {
-                throw new NotImplementedException();
+                _state.ApplicationStatus = _state.ApplicationStatus.ManualEvaluation();
             }
 
             _state.Offer = new CreditOffer().DefaultOffer();

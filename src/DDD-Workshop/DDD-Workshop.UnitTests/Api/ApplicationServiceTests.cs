@@ -13,6 +13,7 @@ namespace DDD_Workshop.UnitTests.Api
         private EvaluateApplicationCommand _evaluateApplicationCommand;
         private ApplicationEvaluatedResponse _evaluateResult;
         private List<Application> _outstandingApplications;
+        private Applicant _applicant;
 
         [Test]
         public void HandleApplicationSubmitCommandWithFirstAndLastName()
@@ -33,6 +34,41 @@ namespace DDD_Workshop.UnitTests.Api
             ThenTheServiceShouldGetTheStateById();
             ThenTheServiceShouldCheckWhetherThereAreOtherApplications();
             ThenTheApplicationShouldBeOffered(5000, 29.99);
+        }
+
+        [Test]
+        public void HandleEvaluateApplicationCommandOutstandingApplications()
+        {
+            GivenAnEvaluationApplicationCommand();
+            GivenTheApplicationIdExists(_evaluateApplicationCommand.Id);
+            GivenThereAreOtherApplicationsOutstanding();
+            WhenTheEvaluateApplicationCommandIsExecuted();
+            ThenTheEvaluatedApplicationStateShouldBe("Manual Evaluation");
+        }
+
+        private void ThenTheEvaluatedApplicationStateShouldBe(string status)
+        {
+            Assert.That(_evaluateResult.ApplicationStatus, Is.EqualTo(status));
+        }
+
+
+        private void GivenThereAreOtherApplicationsOutstanding()
+        {
+            _applicant = new Applicant("Daniel", "Lillja");
+            _outstandingApplications = new List<Application>()
+            {
+                // application that was previously submitted
+                new Application() { Applicant = _applicant,
+                    ApplicationStatus = new ApplicationStatus().Accepted(),
+                    Id = _evaluateApplicationCommand.Id},
+                new Application() { Applicant = _applicant,
+                    ApplicationStatus = new ApplicationStatus().Accepted().Offered(),
+                    Id = _evaluateApplicationCommand.Id, Offer = new CreditOffer().DefaultOffer()},
+
+            };
+            For<IApplicationRepository>()
+                .Setup(r => r.GetApplicationsWithApplicant(It.IsAny<Applicant>()))
+                .Returns(_outstandingApplications);
         }
 
         private void ThenTheApplicationShouldBeOffered(int creditLimit, double apr)
