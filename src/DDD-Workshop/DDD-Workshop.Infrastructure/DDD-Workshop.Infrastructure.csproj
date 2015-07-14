@@ -40,7 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DomainCommand.cs" />
+    <Compile Include="DomainResponse.cs" />
+    <Compile Include="DomainService.cs" />
     <Compile Include="IAggregate.cs" />
+    <Compile Include="IAggregateFactory.cs" />
+    <Compile Include="IAggregateState.cs" />
+    <Compile Include="IHandleDomainCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

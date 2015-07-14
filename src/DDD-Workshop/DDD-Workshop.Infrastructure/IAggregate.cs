@@ -1,7 +1,13 @@
 ﻿namespace DDD_Workshop.Infrastructure
 {
-    public interface IAggregate
+    /// <summary>
+    /// The aggregate contains domain logic performed on the
+    /// aggregate state.
+    /// </summary>
+    /// <typeparam name="TAggregateState"></typeparam>
+    public interface IAggregate<TAggregateState>
+        where TAggregateState : IAggregateState
     {
-        object GetState();
+        TAggregateState State { get; set; }
     }
 }

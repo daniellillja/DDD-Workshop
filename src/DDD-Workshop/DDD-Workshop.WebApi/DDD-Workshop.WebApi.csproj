@@ -225,6 +225,10 @@
       <Project>{C1B59279-A655-45DA-AD2B-A41EC262501B}</Project>
       <Name>DDD-Workshop.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DDD-Workshop.Infrastructure\DDD-Workshop.Infrastructure.csproj">
+      <Project>{1ad0d5ac-4cef-499d-804f-b59d087e505f}</Project>
+      <Name>DDD-Workshop.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

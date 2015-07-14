@@ -1,4 +1,5 @@
-﻿using StructureMap.Configuration.DSL;
+﻿using StructureMap.AutoMocking;
+using StructureMap.Configuration.DSL;
 
 namespace DDD_Workshop.Domain.IoC
 {
@@ -12,7 +13,8 @@ namespace DDD_Workshop.Domain.IoC
                 s.WithDefaultConventions();
             });
 
-            
+
         }
+
     }
 }

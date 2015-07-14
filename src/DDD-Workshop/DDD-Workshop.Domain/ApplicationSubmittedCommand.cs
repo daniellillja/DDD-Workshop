@@ -1,6 +1,8 @@
-﻿namespace DDD_Workshop.Domain
+﻿using DDD_Workshop.Infrastructure;
+
+namespace DDD_Workshop.Domain
 {
-    public class ApplicationSubmittedCommand
+    public class ApplicationSubmittedCommand : DomainCommand
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DDD_Workshop.Domain;
+using DDD_Workshop.Infrastructure;
 using Moq;
 using NUnit.Framework;
 
@@ -12,8 +13,39 @@ namespace DDD_Workshop.UnitTests.Api
         private ApplicationSubmittedResponse _result;
         private EvaluateApplicationCommand _evaluateApplicationCommand;
         private ApplicationEvaluatedResponse _evaluateResult;
-        private List<Application> _outstandingApplications;
+        private List<ApplicationState> _outstandingApplications;
         private Applicant _applicant;
+        private AcceptOfferCommand _acceptOfferCommand;
+        private AcceptOfferResponse _acceptOfferResponse;
+
+        [Test]
+        public void HandleAcceptOfferCommandWithValidId()
+        {
+            GivenAAcceptOfferCommandWithValidId();
+            WhenTheAcceptOfferCommandIsExecuted();
+            ThenTheServiceShouldGetTheStateById();
+            ThenTheServiceShouldCreateTheAggregate();
+        }
+
+        private void ThenTheServiceShouldCreateTheAggregate()
+        {
+            For<IAggregateFactory<ApplicationAggregate, ApplicationState>>()
+                .Verify(f => f.CreateAggregate(Moq.It.IsAny<IAggregateState>()));
+        }
+
+        private void WhenTheAcceptOfferCommandIsExecuted()
+        {
+            _acceptOfferResponse = ObjectUnderTest.Handle(_acceptOfferCommand);
+        }
+
+        private void GivenAAcceptOfferCommandWithValidId()
+        {
+            _acceptOfferCommand = new AcceptOfferCommand(Guid.NewGuid());
+            var agg = new ApplicationAggregate();
+            For<IAggregateFactory<ApplicationAggregate, ApplicationState>>()
+                .Setup(f => f.CreateAggregate(It.IsAny<ApplicationState>()))
+                .Returns(agg);
+        }
 
         [Test]
         public void HandleApplicationSubmitCommandWithFirstAndLastName()
@@ -55,13 +87,13 @@ namespace DDD_Workshop.UnitTests.Api
         private void GivenThereAreOtherApplicationsOutstanding()
         {
             _applicant = new Applicant("Daniel", "Lillja");
-            _outstandingApplications = new List<Application>()
+            _outstandingApplications = new List<ApplicationState>()
             {
                 // application that was previously submitted
-                new Application() { Applicant = _applicant,
+                new ApplicationState() { Applicant = _applicant,
                     ApplicationStatus = new ApplicationStatus().Accepted(),
                     Id = _evaluateApplicationCommand.Id},
-                new Application() { Applicant = _applicant,
+                new ApplicationState() { Applicant = _applicant,
                     ApplicationStatus = new ApplicationStatus().Accepted().Offered(),
                     Id = _evaluateApplicationCommand.Id, Offer = new CreditOffer().DefaultOffer()},
 
@@ -80,10 +112,10 @@ namespace DDD_Workshop.UnitTests.Api
 
         private void GivenThereAreNoOtherApplicationsOutstanding()
         {
-            _outstandingApplications = new List<Application>()
+            _outstandingApplications = new List<ApplicationState>()
             {
                 // application that was previously submitted
-                new Application()
+                new ApplicationState()
             };
             For<IApplicationRepository>()
                 .Setup(r => r.GetApplicationsWithApplicant(It.IsAny<Applicant>()))
@@ -92,12 +124,20 @@ namespace DDD_Workshop.UnitTests.Api
 
         private void GivenTheApplicationIdExists(Guid id)
         {
+            var state = new ApplicationState()
+            {
+                Id = id,
+                Applicant = new Applicant("Daniel", "Lillja"),
+                ApplicationStatus = new ApplicationStatus().Accepted()
+            };
+            var agg = new ApplicationAggregate();
+            agg.State = state;
             For<IApplicationRepository>()
                 .Setup(r => r.GetApplicationById(It.IsAny<Guid>()))
-                .Returns(new Application()
-                {
-                    Id = id, Applicant = new Applicant("Daniel", "Lillja"), ApplicationStatus = new ApplicationStatus().Accepted()
-                });
+                .Returns(state);
+            For<IAggregateFactory<ApplicationAggregate, ApplicationState>>()
+                .Setup(f => f.CreateAggregate(It.IsAny<ApplicationState>()))
+                .Returns(agg);
 
         }
 
@@ -126,7 +166,7 @@ namespace DDD_Workshop.UnitTests.Api
         private void ThenTheApplicationStateShouldBeSaved()
         {
             For<IApplicationRepository>()
-                .Verify(r => r.SaveApplication(It.IsAny<Application>()));
+                .Verify(r => r.SaveApplication(It.IsAny<ApplicationState>()));
         }
 
         private void ThenTheApplicationStateShouldBeAccepted()
@@ -142,6 +182,10 @@ namespace DDD_Workshop.UnitTests.Api
         private void GivenACommandWithFirstAndLastName(string firstName, string lastName)
         {
             _command = new ApplicationSubmittedCommand(firstName, lastName);
+            var agg = new ApplicationAggregate();
+            For<IAggregateFactory<ApplicationAggregate, ApplicationState>>()
+                .Setup(f => f.CreateAggregate(It.IsAny<ApplicationState>()))
+                .Returns(agg);
         }
     }
 }

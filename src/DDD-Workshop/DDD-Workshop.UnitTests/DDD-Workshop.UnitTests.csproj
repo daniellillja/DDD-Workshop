@@ -88,6 +88,10 @@
       <Project>{c1b59279-a655-45da-ad2b-a41ec262501b}</Project>
       <Name>DDD-Workshop.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DDD-Workshop.Infrastructure\DDD-Workshop.Infrastructure.csproj">
+      <Project>{1ad0d5ac-4cef-499d-804f-b59d087e505f}</Project>
+      <Name>DDD-Workshop.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DDD-Workshop.WebApi\DDD-Workshop.WebApi.csproj">
       <Project>{578ceb0d-e4dc-4a6f-bbc2-213a0908ec6f}</Project>
       <Name>DDD-Workshop.WebApi</Name>
@@ -95,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Domain\" />
+    <Folder Include="Infrastructure\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -49,9 +49,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcceptOfferCommand.cs" />
+    <Compile Include="AcceptOfferResponse.cs" />
     <Compile Include="Applicant.cs" />
+    <Compile Include="Application.cs" />
+    <Compile Include="ApplicationAggregate.cs" />
+    <Compile Include="ApplicationEvaluatedResponse.cs" />
     <Compile Include="ApplicationService.cs" />
+    <Compile Include="ApplicationState.cs" />
+    <Compile Include="ApplicationStatus.cs" />
     <Compile Include="ApplicationSubmittedCommand.cs" />
+    <Compile Include="ApplicationSubmittedResponse.cs" />
+    <Compile Include="CreditOffer.cs" />
+    <Compile Include="EvaluateApplicationCommand.cs" />
+    <Compile Include="IApplicationRepository.cs" />
+    <Compile Include="IApplicationService.cs" />
     <Compile Include="IoC\DomainRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

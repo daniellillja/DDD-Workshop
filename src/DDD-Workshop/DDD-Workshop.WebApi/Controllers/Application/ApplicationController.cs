@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Http;
 using DDD_Workshop.Domain;
 
@@ -11,6 +12,18 @@ namespace DDD_Workshop.WebApi.Controllers.Application
         public ApplicationController(IApplicationService applicationService)
         {
             _applicationService = applicationService;
+        }
+
+        public IHttpActionResult PostAcceptOfferRequest(AcceptOfferRequest request)
+        {
+            var command = request.ToCommand();
+            var acceptOfferResponse = _applicationService.Handle(command);
+            if (acceptOfferResponse != null)
+            {
+                return Ok(acceptOfferResponse);
+            }
+
+            return NotFound();
         }
 
         public IHttpActionResult PostSubmitApplicationRequest(SubmitApplicationRequest request)
@@ -27,6 +40,18 @@ namespace DDD_Workshop.WebApi.Controllers.Application
             }
 
             return NotFound();
+        }
+    }
+
+    
+
+    public class AcceptOfferRequest
+    {
+        public Guid ApplicationId { get; set; }
+
+        public AcceptOfferCommand ToCommand()
+        {
+            return new AcceptOfferCommand(ApplicationId);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Web.Http;
 using System.Web.Http.Results;
 using DDD_Workshop.Domain;
@@ -16,6 +15,8 @@ namespace DDD_Workshop.UnitTests
         private SubmitApplicationRequest _request;
         private ApplicationSubmittedResponse _submitReponse;
         private ApplicationEvaluatedResponse _evaluateResponse;
+        private AcceptOfferRequest _acceptOfferRequest;
+        private AcceptOfferResponse _acceptOfferResponse;
 
         [Test]
         public void WhenASubmitApplicationRequestIsPosted()
@@ -25,6 +26,40 @@ namespace DDD_Workshop.UnitTests
             ThenTheApplicationServiceSubmitApplicationMethodShouldBeCalled();
             ThenTheApplicationServiceEvaluateMethodShouldBeACalled();
             ThenTheApiShouldReturnOk();
+        }
+
+        [Test]
+        public void WhenAnAcceptOfferRequestIsPosted()
+        {
+            GivenAValidAcceptOfferRequestIsPosted();
+            WhenTheRequestIsProcessed();
+            ThenTheApplicationServiceAcceptOfferShouldBeCalled();
+            ThenTheApiShouldReturnOk<AcceptOfferResponse>();
+        }
+
+        private void ThenTheApiShouldReturnOk<T>()
+        {
+            Assert.That(_result.GetType(), Is.EqualTo(typeof(OkNegotiatedContentResult<T>)));
+        }
+
+        private void ThenTheApplicationServiceAcceptOfferShouldBeCalled()
+        {
+            For<IApplicationService>()
+                .Verify(s => s.Handle(It.IsAny<AcceptOfferCommand>()));
+        }
+
+        private void WhenTheRequestIsProcessed()
+        {
+            _result = ObjectUnderTest.PostAcceptOfferRequest(_acceptOfferRequest);
+        }
+
+        private void GivenAValidAcceptOfferRequestIsPosted()
+        {
+            _acceptOfferRequest = new AcceptOfferRequest() {ApplicationId = Guid.NewGuid()};
+            _acceptOfferResponse = new AcceptOfferResponse() {AccountNumber = "213423", AccountActivationStatus = "Unactivated"};
+            For<IApplicationService>()
+                .Setup(s => s.Handle(It.IsAny<AcceptOfferCommand>()))
+                .Returns(_acceptOfferResponse);
         }
 
         private void ThenTheApplicationServiceEvaluateMethodShouldBeACalled()
@@ -62,10 +97,10 @@ namespace DDD_Workshop.UnitTests
             };
 
             For<IApplicationService>()
-                .Setup(s => s.Handle(Moq.It.IsAny<ApplicationSubmittedCommand>()))
+                .Setup(s => s.Handle(It.IsAny<ApplicationSubmittedCommand>()))
                 .Returns(_submitReponse);
             For<IApplicationService>()
-                .Setup(s => s.Handle(Moq.It.IsAny<EvaluateApplicationCommand>()))
+                .Setup(s => s.Handle(It.IsAny<EvaluateApplicationCommand>()))
                 .Returns(_evaluateResponse);
 
         }
@@ -73,7 +108,7 @@ namespace DDD_Workshop.UnitTests
         private void ThenTheApplicationServiceSubmitApplicationMethodShouldBeCalled()
         {
             For<IApplicationService>()
-                .Verify(s => s.Handle(Moq.It.IsAny<ApplicationSubmittedCommand>()));
+                .Verify(s => s.Handle(It.IsAny<ApplicationSubmittedCommand>()));
         }
 
         private void WhenTheRequestIsPosted()
@@ -81,4 +116,5 @@ namespace DDD_Workshop.UnitTests
             _result = ObjectUnderTest.PostSubmitApplicationRequest(_request);
         }
     }
+
 }
