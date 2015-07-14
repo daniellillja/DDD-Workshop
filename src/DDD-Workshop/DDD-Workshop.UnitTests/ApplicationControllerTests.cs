@@ -1,8 +1,10 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq.Expressions;
 using System.Web.Http;
 using System.Web.Http.Results;
 using DDD_Workshop.Domain;
 using DDD_Workshop.WebApi.Controllers.Application;
+using Moq;
 using NUnit.Framework;
 
 namespace DDD_Workshop.UnitTests
@@ -12,12 +14,8 @@ namespace DDD_Workshop.UnitTests
     {
         private IHttpActionResult _result;
         private SubmitApplicationRequest _request;
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            InitObjectUnderTest();
-        }
+        private ApplicationSubmittedResponse _submitReponse;
+        private ApplicationEvaluatedResponse _evaluateResponse;
 
         [Test]
         public void WhenASubmitApplicationRequestIsPosted()
@@ -25,13 +23,20 @@ namespace DDD_Workshop.UnitTests
             GivenAValidApplicationSubmittedRequest();
             WhenTheRequestIsPosted();
             ThenTheApplicationServiceSubmitApplicationMethodShouldBeCalled();
+            ThenTheApplicationServiceEvaluateMethodShouldBeACalled();
             ThenTheApiShouldReturnOk();
+        }
+
+        private void ThenTheApplicationServiceEvaluateMethodShouldBeACalled()
+        {
+            For<IApplicationService>()
+                .Verify(s => s.Handle(It.IsAny<EvaluateApplicationCommand>()));
         }
 
         private void ThenTheApiShouldReturnOk()
         {
             Assert.That(_result, 
-                Is.TypeOf<OkNegotiatedContentResult<ApplicationSubmittedResponse>>());
+                Is.TypeOf<OkNegotiatedContentResult<ApplicationEvaluatedResponse>>());
         }
 
 
@@ -42,10 +47,26 @@ namespace DDD_Workshop.UnitTests
                 FirstName = "Daniel",
                 LastName = "Lillja"
             };
+            _submitReponse = new ApplicationSubmittedResponse()
+            {
+                ApplicationStatus = new ApplicationStatus().Accepted().Status,
+                ApplicationId = Guid.NewGuid()
+            };
+
+            var offerData = new CreditOffer().DefaultOffer();
+            _evaluateResponse = new ApplicationEvaluatedResponse()
+            {
+                ApplicationStatus = new ApplicationStatus().Accepted().Offered().Status,
+                APR = offerData.APR,
+                CreditLimit = offerData.CreditLimit
+            };
 
             For<IApplicationService>()
                 .Setup(s => s.Handle(Moq.It.IsAny<ApplicationSubmittedCommand>()))
-                .Returns(new ApplicationSubmittedResponse());
+                .Returns(_submitReponse);
+            For<IApplicationService>()
+                .Setup(s => s.Handle(Moq.It.IsAny<EvaluateApplicationCommand>()))
+                .Returns(_evaluateResponse);
 
         }
 

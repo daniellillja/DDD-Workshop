@@ -7,6 +7,7 @@ namespace DDD_Workshop.Domain
 {
     public interface IApplicationService
     {
+        ApplicationEvaluatedResponse Handle(EvaluateApplicationCommand command);
         ApplicationSubmittedResponse Handle(ApplicationSubmittedCommand command);
     }
 

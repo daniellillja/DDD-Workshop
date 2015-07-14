@@ -16,11 +16,14 @@ namespace DDD_Workshop.WebApi.Controllers.Application
         public IHttpActionResult PostSubmitApplicationRequest(SubmitApplicationRequest request)
         {
             var command = new ApplicationSubmittedCommand(request.FirstName, request.LastName);
-            var response = _applicationService.Handle(command);
+            var submitResponse = _applicationService.Handle(command);
+            var evaluateReponse =
+                _applicationService.Handle(new EvaluateApplicationCommand(submitResponse.ApplicationId));
 
-            if (response != null)
+
+            if (evaluateReponse != null)
             {
-                return Ok(response);
+                return Ok(evaluateReponse);
             }
 
             return NotFound();
