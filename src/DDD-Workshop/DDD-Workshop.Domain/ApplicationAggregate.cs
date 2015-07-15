@@ -32,6 +32,7 @@ namespace DDD_Workshop.Domain
             State.ApplicationStatus = State.ApplicationStatus.Offered();
         }
 
+        // TODO: may be best to extract to another interface
         private bool ApplicantHasOtherApplications(List<ApplicationState> allApplications)
         {
             return allApplications.Count > 1;
