@@ -1,6 +1,8 @@
+using System;
+
 namespace DDD_Workshop.Domain
 {
-    public class Applicant
+    public class Applicant : IEquatable<Applicant>
     {
         public Applicant(string firstName, string lastName)
         {
@@ -8,7 +10,16 @@ namespace DDD_Workshop.Domain
             LastName = lastName;
         }
 
+
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
+        public bool Equals(Applicant other)
+        {
+            var firstNameSame = FirstName.Equals(other.FirstName);
+            var lastNameSame = LastName.Equals(other.LastName);
+            return firstNameSame && lastNameSame;
+        }
     }
 }

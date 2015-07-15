@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C1B59279-A655-45DA-AD2B-A41EC262501B}</ProjectGuid>
+    <ProjectGuid>{4F8BB383-357F-4E3A-B04F-832556C6DCB2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DDD_Workshop.Domain</RootNamespace>
-    <AssemblyName>DDD-Workshop.Domain</AssemblyName>
+    <RootNamespace>DDD_Workshop.Data</RootNamespace>
+    <AssemblyName>DDD-Workshop.Data</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,17 +30,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="StructureMap, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\structuremap.3.1.6.186\lib\net40\StructureMap.dll</HintPath>
+    <Reference Include="MongoDB.Bson, Version=2.0.1.27, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Bson.2.0.1\lib\net45\MongoDB.Bson.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="StructureMap.Net4, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\structuremap.3.1.6.186\lib\net40\StructureMap.Net4.dll</HintPath>
+    <Reference Include="MongoDB.Driver, Version=2.0.1.27, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.2.0.1\lib\net45\MongoDB.Driver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.0.1.27, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.0.1\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Legacy, Version=2.0.1.27, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\mongocsharpdriver.2.0.1\lib\net45\MongoDB.Driver.Legacy.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.IdentityModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,31 +56,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AcceptOfferCommand.cs" />
-    <Compile Include="AcceptOfferResponse.cs" />
-    <Compile Include="Applicant.cs" />
-    <Compile Include="ApplicationAggregate.cs" />
-    <Compile Include="ApplicationEvaluatedResponse.cs" />
-    <Compile Include="ApplicationService.cs" />
-    <Compile Include="ApplicationState.cs" />
-    <Compile Include="ApplicationStatus.cs" />
-    <Compile Include="ApplicationSubmittedCommand.cs" />
-    <Compile Include="ApplicationSubmittedResponse.cs" />
-    <Compile Include="CreditOffer.cs" />
-    <Compile Include="EvaluateApplicationCommand.cs" />
-    <Compile Include="IApplicationRepository.cs" />
-    <Compile Include="IApplicationService.cs" />
-    <Compile Include="IoC\DomainRegistry.cs" />
+    <Compile Include="ApplicatonRepository.cs" />
+    <Compile Include="IMongoDbSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\DDD-Workshop.Domain\DDD-Workshop.Domain.csproj">
+      <Project>{c1b59279-a655-45da-ad2b-a41ec262501b}</Project>
+      <Name>DDD-Workshop.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DDD-Workshop.Infrastructure\DDD-Workshop.Infrastructure.csproj">
       <Project>{1ad0d5ac-4cef-499d-804f-b59d087e505f}</Project>
       <Name>DDD-Workshop.Infrastructure</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

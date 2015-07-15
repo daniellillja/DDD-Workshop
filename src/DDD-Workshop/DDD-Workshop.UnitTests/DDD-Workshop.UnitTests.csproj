@@ -72,7 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\ApplicationServiceTests.cs" />
+    <Compile Include="Domain\ApplicationServiceTests.cs" />
     <Compile Include="Api\CustomControllerActivatorTests.cs" />
     <Compile Include="Api\WebApiContainerTests.cs" />
     <Compile Include="ApplicationControllerTests.cs" />
@@ -98,7 +98,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Domain\" />
     <Folder Include="Infrastructure\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
