@@ -5,7 +5,7 @@ using DDD_Workshop.Infrastructure;
 using Moq;
 using NUnit.Framework;
 
-namespace DDD_Workshop.UnitTests.Api
+namespace DDD_Workshop.UnitTests.Domain
 {
     public class ApplicationServiceTests : UnitTestsFor<ApplicationService>
     {
