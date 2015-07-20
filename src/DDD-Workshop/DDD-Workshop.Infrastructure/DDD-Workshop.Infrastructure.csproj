@@ -47,6 +47,7 @@
     <Compile Include="IAggregateFactory.cs" />
     <Compile Include="IAggregateState.cs" />
     <Compile Include="IHandleDomainCommands.cs" />
+    <Compile Include="IIdGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

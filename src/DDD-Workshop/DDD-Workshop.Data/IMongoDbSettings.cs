@@ -6,6 +6,5 @@ namespace DDD_Workshop.Data
     {
         string ConnectionString { get; }
         string Database { get; }
-        string ApplicationCollectionName { get; }
     }
 }

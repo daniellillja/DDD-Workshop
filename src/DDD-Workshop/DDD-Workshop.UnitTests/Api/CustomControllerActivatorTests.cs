@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Web.Http.Controllers;
 using DDD_Workshop.Domain;
+using DDD_Workshop.Domain.Application;
 using DDD_Workshop.WebApi;
 using DDD_Workshop.WebApi.Controllers.Application;
 using Moq;

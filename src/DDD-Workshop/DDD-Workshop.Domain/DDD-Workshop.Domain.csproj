@@ -30,14 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="StructureMap, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\structuremap.3.1.6.186\lib\net40\StructureMap.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="StructureMap.Net4, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\structuremap.3.1.6.186\lib\net40\StructureMap.Net4.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
@@ -49,25 +41,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AcceptOfferCommand.cs" />
-    <Compile Include="AcceptOfferResponse.cs" />
-    <Compile Include="Applicant.cs" />
-    <Compile Include="ApplicationAggregate.cs" />
-    <Compile Include="ApplicationEvaluatedResponse.cs" />
-    <Compile Include="ApplicationService.cs" />
-    <Compile Include="ApplicationState.cs" />
-    <Compile Include="ApplicationStatus.cs" />
-    <Compile Include="ApplicationSubmittedCommand.cs" />
-    <Compile Include="ApplicationSubmittedResponse.cs" />
-    <Compile Include="CreditOffer.cs" />
-    <Compile Include="EvaluateApplicationCommand.cs" />
-    <Compile Include="IApplicationRepository.cs" />
-    <Compile Include="IApplicationService.cs" />
-    <Compile Include="IoC\DomainRegistry.cs" />
+    <Compile Include="Application\AcceptOfferCommand.cs" />
+    <Compile Include="Application\AcceptOfferResponse.cs" />
+    <Compile Include="Application\Applicant.cs" />
+    <Compile Include="Application\ApplicationAggregate.cs" />
+    <Compile Include="Application\ApplicationEvaluatedResponse.cs" />
+    <Compile Include="Application\ApplicationService.cs" />
+    <Compile Include="Application\ApplicationState.cs" />
+    <Compile Include="Application\ApplicationStatus.cs" />
+    <Compile Include="Application\ApplicationSubmittedCommand.cs" />
+    <Compile Include="Application\ApplicationSubmittedResponse.cs" />
+    <Compile Include="Application\CreditOffer.cs" />
+    <Compile Include="Application\EvaluateApplicationCommand.cs" />
+    <Compile Include="Application\IApplicationRepository.cs" />
+    <Compile Include="Application\IApplicationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DDD-Workshop.Infrastructure\DDD-Workshop.Infrastructure.csproj">

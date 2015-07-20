@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Http;
 using DDD_Workshop.Domain;
+using DDD_Workshop.Domain.Application;
 
 namespace DDD_Workshop.WebApi.Controllers.Application
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DDD_Workshop.Domain;
+using DDD_Workshop.Domain.Application;
 using DDD_Workshop.Infrastructure;
 using Moq;
 using NUnit.Framework;

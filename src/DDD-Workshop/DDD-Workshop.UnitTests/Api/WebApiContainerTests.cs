@@ -1,5 +1,6 @@
 ﻿
 using DDD_Workshop.Domain;
+using DDD_Workshop.Domain.Application;
 using DDD_Workshop.WebApi.IoC;
 using NUnit.Framework;
 

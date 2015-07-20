@@ -27,7 +27,6 @@ namespace DDD_Workshop.IntegrationTests.Api
             Assert.That(response.EnsureSuccessStatusCode(), Is.True);
             
             Debug.WriteLine(response);
-
         }
 
         [TestFixtureTearDown]

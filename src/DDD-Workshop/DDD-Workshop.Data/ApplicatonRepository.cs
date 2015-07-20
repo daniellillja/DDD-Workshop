@@ -1,38 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using DDD_Workshop.Domain;
-using MongoDB.Driver;
+using System.Linq;
+using DDD_Workshop.Domain.Application;
 
 namespace DDD_Workshop.Data
 {
     public class ApplicatonRepository : IApplicationRepository
     {
-        private readonly IMongoDbSettings _mongoSettings;
-        private readonly MongoClient _mongoClient;
-        private readonly IMongoDatabase _mongoDatabase;
+        private readonly DomainStateRepository<ApplicationStateDataModel> _mongoRepository;
 
-        public ApplicatonRepository(IMongoDbSettings mongoSettings)
+        public ApplicatonRepository(DomainStateRepository<ApplicationStateDataModel> mongoRepository)
         {
-            _mongoSettings = mongoSettings;
-            _mongoClient = new MongoClient(_mongoSettings.ConnectionString);
-            _mongoDatabase = _mongoClient.GetDatabase(_mongoSettings.Database);
+            _mongoRepository = mongoRepository;
         }
 
         public List<ApplicationState> GetApplicationsWithApplicant(Applicant applicant)
         {
-            throw new NotImplementedException();
+            return _mongoRepository.Where(a => a.Applicant.Equals(applicant))
+                .Select(a => (ApplicationState) a).ToList();
         }
 
         public void SaveApplication(ApplicationState application)
         {
-            var collection = _mongoDatabase.GetCollection<Applicant>(_mongoSettings.ApplicationCollectionName);
-            var existingApplicant = collection.FindAsync(applicant => applicant.Equals(application.Applicant));
-
+            var dataModel = new ApplicationStateDataModel(application);
+            _mongoRepository.Update(dataModel);
         }
 
         public ApplicationState GetApplicationById(Guid id)
         {
-            throw new NotImplementedException();
+           return _mongoRepository.GetById(id);
         }
     }
 }

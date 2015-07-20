@@ -1,62 +1,51 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq.Expressions;
+using System.Linq;
 using DDD_Workshop.Data;
 using DDD_Workshop.Domain;
-using MongoDB.Bson;
-using MongoDB.Driver;
+using DDD_Workshop.Domain.Application;
 using NUnit.Framework;
 
 namespace DDD_Workshop.IntegrationTests.Storage.Mongo
 {
-    [TestFixture]
-    public class IntegrationMongoDbSettingsTest
-    {
-        private IntegrationMongoDbSettings _settings;
-        private MongoClient _client;
-        private IMongoDatabase _server;
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            _settings = new IntegrationMongoDbSettings();
-            _client = new MongoClient(_settings.ConnectionString);
-            _server = _client.GetDatabase(_settings.Database);
-        }
-
-        [Test]
-        public void SettingsCanBeResolved()
-        {
-            var settings = _server.Settings.ToJson();
-            Assert.That(settings, Is.Not.Null);
-            Console.WriteLine("mongo settings: {0}", settings);
-        }
-    }
-
-    [TestFixture]
-   public class ApplicationRepositoryTests
+    public class ApplicationRepositoryTests : RepositoryTestsFor<ApplicatonRepository>
     {
         private ApplicationState _applicationToSave;
-        private ApplicatonRepository _objectUnderTest;
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            GivenProperMongoDatabaseSetupForIntegrationTests();
-            _objectUnderTest =
-                new ApplicatonRepository(new IntegrationMongoDbSettings());
-        }
+        private ApplicationState _applicationRetreived;
 
         [Test]
         public void SaveApplicationSaves()
         {
             GivenAValidApplicationToSave();
             WhenISaveTheApplication(_applicationToSave);
+            ThenTheApplicationCanBeRetreivedById(_applicationToSave);
+            ThenTheApplicationFieldsAreSaved(_applicationToSave, _applicationRetreived);
+            ThenTheApplicationCanRetreivedByApplicant(_applicationToSave.Applicant);
+        }
+
+        private void ThenTheApplicationCanRetreivedByApplicant(Applicant applicant)
+        {
+            var application = ObjectUnderTest.GetApplicationsWithApplicant(applicant)
+                .FirstOrDefault();
+            Assert.That(application, Is.Not.Null);
+            Assert.That(application.Applicant.FirstName, Is.EqualTo(applicant.FirstName));
+        }
+
+        private void ThenTheApplicationFieldsAreSaved(ApplicationState applicationToSave, ApplicationState applicationRetreived)
+        {
+            Assert.That(applicationToSave.Id, Is.EqualTo(_applicationRetreived.Id));
+            Assert.That(applicationToSave.Applicant.FirstName, Is.EqualTo(_applicationRetreived.Applicant.FirstName));
+            Assert.That(applicationToSave.Offer.APR, Is.EqualTo(_applicationRetreived.Offer.APR));
+        }
+
+        private void ThenTheApplicationCanBeRetreivedById(ApplicationState application)
+        {
+            _applicationRetreived = ObjectUnderTest.GetApplicationById(application.Id);
         }
 
         private void WhenISaveTheApplication(ApplicationState applicationToSave)
         {
-            
+            ObjectUnderTest.SaveApplication(applicationToSave);
         }
 
         private void GivenAValidApplicationToSave()
@@ -70,31 +59,11 @@ namespace DDD_Workshop.IntegrationTests.Storage.Mongo
             };
         }
 
-        private void GivenProperMongoDatabaseSetupForIntegrationTests()
+        public override void ClearData()
         {
-            
+            var manager = Container.GetInstance<DomainStateRepository<ApplicationStateDataModel>>();
+            manager.Collection.Drop();
         }
     }
 
-    public class IntegrationMongoDbSettings : IMongoDbSettings
-    {
-        public string ConnectionString
-        {
-            get { return "mongodb://localhost"; }
-        }
-
-        public string Database
-        {
-            get { return "DDDWorkshopIntegrationTest"; }
-        }
-
-        public string ApplicationCollectionName
-        {
-            get { return "Applications"; }
-        }
-    }
-
-    public abstract class MongoDataIntegrationTestBase
-    {
-    }
 }
