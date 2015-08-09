@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ApplicationControllerIntegrationTests.cs" />
+    <Compile Include="Api\RestIntegrationTests.cs" />
     <Compile Include="Api\Startup.cs" />
     <Compile Include="ContainerBootstrapperTests.cs" />
     <Compile Include="IntegrationMongoDbSettings.cs" />
