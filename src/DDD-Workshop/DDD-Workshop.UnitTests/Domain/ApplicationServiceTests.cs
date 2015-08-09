@@ -25,14 +25,9 @@ namespace DDD_Workshop.UnitTests.Domain
             GivenAAcceptOfferCommandWithValidId();
             WhenTheAcceptOfferCommandIsExecuted();
             ThenTheServiceShouldGetTheStateById();
-            ThenTheServiceShouldCreateTheAggregate();
         }
 
-        private void ThenTheServiceShouldCreateTheAggregate()
-        {
-            For<IAggregateFactory<ApplicationAggregate, ApplicationState>>()
-                .Verify(f => f.CreateAggregate(Moq.It.IsAny<IAggregateState>()));
-        }
+      
 
         private void WhenTheAcceptOfferCommandIsExecuted()
         {

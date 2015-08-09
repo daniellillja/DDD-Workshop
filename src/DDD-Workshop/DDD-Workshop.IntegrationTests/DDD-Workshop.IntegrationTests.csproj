@@ -125,6 +125,9 @@
     <Compile Include="Storage\Mongo\RepositoryTestsFor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Api\JsonData\ValidApplicationWIthFirstLastName.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="app.config" />
     <None Include="MongoRepository.chm" />
     <None Include="packages.config" />
@@ -146,11 +149,6 @@
       <Project>{578ceb0d-e4dc-4a6f-bbc2-213a0908ec6f}</Project>
       <Name>DDD-Workshop.WebApi</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Api\JsonData\ValidRequestWithFirstAndLastName.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

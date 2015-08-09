@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace DDD_Workshop.UnitTests
 {
     [TestFixture]
-    public class ApplicationControllerTests : UnitTestsFor<ApplicationController>
+    public class ApplicationControllerTests : UnitTestsFor<ApplicationsController>
     {
         private IHttpActionResult _result;
         private SubmitApplicationRequest _request;

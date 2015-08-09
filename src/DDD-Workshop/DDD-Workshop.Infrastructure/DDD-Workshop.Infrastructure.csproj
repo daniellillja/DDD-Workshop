@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="DomainCommand.cs" />
     <Compile Include="DomainResponse.cs" />
-    <Compile Include="DomainService.cs" />
     <Compile Include="IAggregate.cs" />
     <Compile Include="IAggregateFactory.cs" />
     <Compile Include="IAggregateState.cs" />

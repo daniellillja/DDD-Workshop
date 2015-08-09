@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using DDD_Workshop.Data;
+using NUnit.Framework;
 using StructureMap;
 
 namespace DDD_Workshop.IntegrationTests.Storage.Mongo
@@ -28,5 +29,13 @@ namespace DDD_Workshop.IntegrationTests.Storage.Mongo
         }
 
         public IContainer Container { get; set; }
+
+
+        [SetUp]
+        public void ClearDatabaseForTest()
+        {
+            var manager = Container.GetInstance<DomainStateRepository<ApplicationStateDataModel>>();
+            manager.Collection.Drop();
+        }
     }
 }

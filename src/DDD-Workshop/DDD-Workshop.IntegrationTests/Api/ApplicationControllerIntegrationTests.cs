@@ -1,41 +1,43 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Net.Http;
-using Microsoft.Owin.Testing;
+﻿using DDD_Workshop.Domain.Application;
 using NUnit.Framework;
 
 namespace DDD_Workshop.IntegrationTests.Api
 {
-    [TestFixture]
     public class ApplicationControllerIntegrationTests
+        : RestIntegrationTests
     {
-        private TestServer _server;
-
-        [TestFixtureSetUp]
-        public void Setup()
+        [Test]
+        [TestCase(@"Api\JsonData\ValidApplicationWIthFirstLastName.json")]
+        public void ApplicantSubmitsValidApplication(string filePath)
         {
-            _server = TestServer.Create<Startup>();
+            var response = PostJsonFromFile(filePath);
+
+            ThenServerResponseIsSuccessful(response);
+            WriteServerResponseToConsole(response);
+
+            var responseData = DeserializeJsonToDynamicObject<ApplicationEvaluatedResponse>(GetResponseJson(response));
+            Assert.That(responseData.APR, Is.EqualTo(29.99));
+            Assert.That(responseData.CreditLimit, Is.EqualTo(5000));
+            Assert.That(responseData.ApplicationStatus, Is.EqualTo("Offered"));
         }
+
 
         [Test]
-        public void ValidRequestWithFirstAndLastName()
+        [TestCase(@"Api\JsonData\ValidApplicationWIthFirstLastName.json")]
+        public void ApplicantSubmitsTwoValidApplications(string filePath)
         {
-            var filePath = @"Api\JsonData\ValidRequestWithFirstAndLastName.txt";
-            var json = File.ReadAllText(filePath);
-            var response = _server.HttpClient.PostAsync("/api/application",
-                new StringContent(json)).Result;
-            Assert.That(response.EnsureSuccessStatusCode(), Is.True);
-            
-            Debug.WriteLine(response);
+            var response = PostJsonFromFile(filePath);
+            var response2 = PostJsonFromFile(filePath);
+
+            ThenServerResponseIsSuccessful(response2);
+            WriteServerResponseToConsole(response2);
+
+            var responseData = DeserializeJsonToDynamicObject<ApplicationEvaluatedResponse>(GetResponseJson(response2));
+            Assert.That(responseData.ApplicationStatus, Is.EqualTo("Manual Evaluation"));
         }
 
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            _server.Dispose();
-        }
     }
 
-    
+
 
 }

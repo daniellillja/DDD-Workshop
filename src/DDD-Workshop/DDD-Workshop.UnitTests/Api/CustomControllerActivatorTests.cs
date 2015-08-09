@@ -19,14 +19,14 @@ namespace DDD_Workshop.UnitTests.Api
         {
             For<IContainer>()
                 .Setup(c => c.GetInstance(It.IsAny<Type>()))
-                .Returns(new ApplicationController(new Mock<IApplicationService>().Object));
+                .Returns(new ApplicationsController(new Mock<IApplicationService>().Object));
 
             var result = ObjectUnderTest.Create(
                 new HttpRequestMessage(),
                 new HttpControllerDescriptor(),
-                typeof (ApplicationController));
+                typeof (ApplicationsController));
 
-            Assert.That(result, Is.TypeOf<ApplicationController>());
+            Assert.That(result, Is.TypeOf<ApplicationsController>());
         }
     }
 }

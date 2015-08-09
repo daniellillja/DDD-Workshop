@@ -12,7 +12,7 @@ namespace DDD_Workshop.IntegrationTests
 
         public string Database
         {
-            get { throw new NotImplementedException(); }
+            get { return "dddworkshop"; }
         }
     }
 }

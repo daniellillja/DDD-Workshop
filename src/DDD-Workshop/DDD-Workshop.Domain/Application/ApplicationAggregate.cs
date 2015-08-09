@@ -8,6 +8,12 @@ namespace DDD_Workshop.Domain.Application
     {
         public ApplicationState State { get; set; }
 
+        public ApplicationAggregate(ApplicationState state)
+            : this()
+        {
+            State = state;
+        }
+
         public ApplicationAggregate()
         {
             State = new ApplicationState();

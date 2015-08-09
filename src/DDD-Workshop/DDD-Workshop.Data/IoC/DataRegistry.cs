@@ -12,7 +12,7 @@ namespace DDD_Workshop.Data.IoC
                 s.AssemblyContainingType<ApplicatonRepository>();
                 s.WithDefaultConventions();
             });
-            //For<IApplicationRepository>().Use<ApplicationRepos>()
+            For<IApplicationRepository>().Use<ApplicatonRepository>();
         }
     }
 }

@@ -3,15 +3,11 @@ using DDD_Workshop.Infrastructure;
 
 namespace DDD_Workshop.Domain.Application
 {
-    public class ApplicationService
-        : DomainService<ApplicationAggregate, ApplicationState>,
-            IApplicationService
+    public class ApplicationService : IApplicationService
     {
         private readonly IApplicationRepository _applicationRepository;
 
-        public ApplicationService(IAggregateFactory<ApplicationAggregate, ApplicationState> aggregateFactory,
-            IApplicationRepository applicationRepository)
-            : base(aggregateFactory)
+        public ApplicationService(IApplicationRepository applicationRepository)
         {
             _applicationRepository = applicationRepository;
         }
@@ -19,7 +15,7 @@ namespace DDD_Workshop.Domain.Application
         public AcceptOfferResponse Handle(AcceptOfferCommand command)
         {
             var state = _applicationRepository.GetApplicationById(command.ApplicationId);
-            var aggregate = _AggregateFactory.CreateAggregate(state);
+            var aggregate = new ApplicationAggregate(state);
 
             return null;
         }
@@ -29,7 +25,7 @@ namespace DDD_Workshop.Domain.Application
             var state = _applicationRepository.GetApplicationById(command.Id);
             var allApplications = _applicationRepository.GetApplicationsWithApplicant(
                 new Applicant(state.Applicant.FirstName, state.Applicant.LastName));
-            var aggregate = _AggregateFactory.CreateAggregate(state);
+            var aggregate = new ApplicationAggregate(state);
 
             aggregate.EvaluateApplication(allApplications);
 
@@ -41,7 +37,7 @@ namespace DDD_Workshop.Domain.Application
         public ApplicationSubmittedResponse Handle(ApplicationSubmittedCommand command)
         {
             var id = Guid.NewGuid();
-            var aggregate = _AggregateFactory.CreateAggregate(null);
+            var aggregate = new ApplicationAggregate();
             aggregate.AcceptApplication(id, command.FirstName,
                 command.LastName);
 
